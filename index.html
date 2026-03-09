@@ -1,0 +1,1770 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Geometría en el Espacio · Apuntes 2º Bachillerato</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/contrib/auto-render.min.js"
+  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'\\(',right:'\\)',display:false}],throwOnError:false})"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+<style>
+  :root {
+    --bg: #fafaf9;
+    --white: #ffffff;
+    --ink: #1a1917;
+    --muted: #6b6860;
+    --border: #e5e3de;
+    --border2: #d0cec9;
+
+    /* accent palette */
+    --v1: #7c3aed;   /* vectors — purple */
+    --v1l: #ede9fe;
+    --v2: #0284c7;   /* lines — sky */
+    --v2l: #e0f2fe;
+    --v3: #059669;   /* planes — emerald */
+    --v3l: #d1fae5;
+    --v4: #d97706;   /* distances — amber */
+    --v4l: #fef3c7;
+    --v5: #dc2626;   /* skew lines — red */
+    --v5l: #fee2e2;
+
+    --formula-bg: #f5f3f0;
+    --highlight: #fef08a;
+    --r: 10px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  
+  @media print {
+    body { background: white; }
+    .page { box-shadow: none; margin: 0; border-radius: 0; }
+    .no-print { display: none; }
+  }
+
+  body {
+    background: #ede9e4;
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    color: var(--ink);
+    line-height: 1.6;
+  }
+
+  .cover {
+    max-width: 900px;
+    margin: 32px auto 0;
+    background: var(--ink);
+    border-radius: var(--r);
+    padding: 40px 48px;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 24px;
+  }
+  .cover-title {
+    font-size: 2.2rem;
+    font-weight: 700;
+    letter-spacing: -.03em;
+    line-height: 1.1;
+    background: linear-gradient(135deg, #fff 0%, #c4b5fd 50%, #7dd3fc 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .cover-sub {
+    color: #9ca3af;
+    font-size: .85rem;
+    margin-top: 6px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .cover-index {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    min-width: 220px;
+  }
+  .idx-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: .78rem;
+    color: #d1d5db;
+  }
+  .idx-dot {
+    width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0;
+  }
+
+  .page {
+    max-width: 900px;
+    margin: 20px auto;
+    background: var(--white);
+    border-radius: var(--r);
+    padding: 36px 42px;
+    border: 1px solid var(--border);
+    box-shadow: 0 2px 12px rgba(0,0,0,.06);
+  }
+
+  /* ── SECTION HEADERS ── */
+  .sec-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid currentColor;
+  }
+  .sec-num {
+    width: 28px; height: 28px;
+    border-radius: 7px;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: .85rem; flex-shrink: 0;
+    color: white;
+  }
+  .sec-title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    letter-spacing: -.01em;
+    text-transform: uppercase;
+  }
+
+  /* ── GRID LAYOUTS ── */
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+  .grid-auto { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; }
+
+  /* ── CARDS ── */
+  .card {
+    background: var(--formula-bg);
+    border-radius: 8px;
+    padding: 14px 16px;
+    border: 1px solid var(--border);
+  }
+  .card-title {
+    font-size: .7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+
+  .def-box {
+    background: var(--formula-bg);
+    border-left: 3px solid var(--border2);
+    border-radius: 0 8px 8px 0;
+    padding: 10px 14px;
+    margin: 8px 0;
+    font-size: .88rem;
+  }
+
+  .formula-box {
+    background: var(--formula-bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 16px;
+    text-align: center;
+    margin: 6px 0;
+  }
+
+  .highlight-box {
+    background: var(--highlight);
+    border-radius: 6px;
+    padding: 8px 12px;
+    font-size: .82rem;
+    border: 1px solid #fde047;
+  }
+
+  /* ── EQUIVALENCES ── */
+  .equiv-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    font-size: .83rem;
+  }
+  .equiv-list li::before {
+    content: '⟺';
+    margin-right: 6px;
+    color: var(--muted);
+    font-size: .75rem;
+  }
+
+  /* ── OPERATIONS TABLE ── */
+  .ops-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: .83rem;
+  }
+  .ops-table th {
+    background: var(--formula-bg);
+    padding: 6px 10px;
+    text-align: left;
+    font-weight: 600;
+    font-size: .7rem;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    color: var(--muted);
+    border-bottom: 1px solid var(--border);
+  }
+  .ops-table td {
+    padding: 7px 10px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: middle;
+  }
+  .ops-table tr:last-child td { border-bottom: none; }
+
+  /* ── EQUATIONS ── */
+  .eq-types {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px;
+    margin-top: 8px;
+  }
+  .eq-card {
+    border-radius: 8px;
+    padding: 12px 14px;
+    border: 1px solid var(--border);
+    background: var(--formula-bg);
+  }
+  .eq-label {
+    font-size: .68rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .07em;
+    margin-bottom: 6px;
+  }
+
+  /* ── POSITION TABLE ── */
+  .pos-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: .8rem;
+    margin-top: 10px;
+  }
+  .pos-table th {
+    padding: 7px 10px;
+    font-size: .68rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .07em;
+    text-align: left;
+    border-bottom: 2px solid var(--border);
+    background: var(--formula-bg);
+  }
+  .pos-table td {
+    padding: 7px 10px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+  .pos-table tr:last-child td { border-bottom: none; }
+  .pos-badge {
+    display: inline-block;
+    border-radius: 4px;
+    padding: 1px 6px;
+    font-size: .68rem;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  /* ── METHODS ── */
+  .method-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-top: 10px; }
+  .method-card {
+    border-radius: 8px;
+    padding: 14px;
+    border: 1px solid var(--border);
+  }
+  .method-num {
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    display: inline-flex; align-items: center; justify-content: center;
+    font-size: .72rem; font-weight: 700; color: white;
+    margin-bottom: 8px; flex-shrink: 0;
+  }
+  .method-name {
+    font-weight: 600;
+    font-size: .82rem;
+    margin-bottom: 6px;
+  }
+  .method-steps {
+    list-style: none;
+    font-size: .77rem;
+    color: var(--muted);
+    line-height: 1.65;
+    counter-reset: step;
+  }
+  .method-steps li { counter-increment: step; }
+  .method-steps li::before {
+    content: counter(step) '.';
+    font-weight: 600;
+    margin-right: 4px;
+    color: var(--ink);
+  }
+
+  /* ── VIDEOS / QR ── */
+  .videos-section {
+    margin-top: 14px;
+  }
+  .video-sec-title {
+    font-size: .72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    color: var(--muted);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .video-sec-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+  .video-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(115px, 1fr));
+    gap: 10px;
+  }
+  .video-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+  }
+  .video-qr {
+    width: 72px; height: 72px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .video-label {
+    font-size: .65rem;
+    color: var(--muted);
+    text-align: center;
+    line-height: 1.35;
+    max-width: 95px;
+  }
+  .video-url {
+    font-size: .6rem;
+    color: #0284c7;
+    font-family: 'JetBrains Mono', monospace;
+    text-decoration: none;
+    word-break: break-all;
+    text-align: center;
+  }
+
+  /* ── DISTANCE REDUCTION ── */
+  .reduction-box {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px;
+    margin-top: 8px;
+  }
+  .red-item {
+    background: var(--v4l);
+    border: 1px solid #fcd34d;
+    border-radius: 8px;
+    padding: 10px 12px;
+    font-size: .8rem;
+    text-align: center;
+  }
+  .red-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    font-size: .78rem;
+    display: block;
+    margin-bottom: 4px;
+    color: var(--v4);
+  }
+
+  /* ── MISC ── */
+  .subsec {
+    font-size: .75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .07em;
+    color: var(--muted);
+    margin: 14px 0 6px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .subsec::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+  .tag {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .66rem;
+    padding: 1px 5px;
+    border-radius: 4px;
+    font-weight: 500;
+  }
+  p { margin: 4px 0; font-size: .88rem; }
+  small { font-size: .78rem; color: var(--muted); }
+
+  .sep { height: 1px; background: var(--border); margin: 16px 0; }
+
+  /* ── SVG DIAGRAMS ── */
+  .svg-row {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    margin: 10px 0;
+  }
+  .svg-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    flex: 1;
+    min-width: 100px;
+  }
+  .svg-item svg {
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    background: var(--formula-bg);
+  }
+  .svg-caption {
+    font-size: .68rem;
+    color: var(--muted);
+    text-align: center;
+    font-weight: 500;
+  }
+
+  /* ── PRODUCTO ── */
+  .prod-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 16px 0 8px;
+  }
+  .prod-tag {
+    background: var(--v1);
+    color: white;
+    border-radius: 5px;
+    padding: 2px 9px;
+    font-size: .7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+  }
+  .prod-title {
+    font-weight: 700;
+    font-size: .9rem;
+  }
+  .prop-list {
+    list-style: none;
+    font-size: .8rem;
+    line-height: 1.8;
+    padding: 0;
+  }
+  .prop-list li::before {
+    content: '•';
+    color: var(--v1);
+    margin-right: 6px;
+    font-weight: 700;
+  }
+
+  /* ── NORMAL VECTORS ── */
+  .normals-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px;
+    margin-top: 10px;
+  }
+  .normal-card {
+    border-radius: 8px;
+    padding: 12px;
+    border: 1px solid var(--border);
+    font-size: .8rem;
+  }
+  .normal-condition {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .73rem;
+    background: rgba(0,0,0,.04);
+    border-radius: 4px;
+    padding: 4px 7px;
+    margin: 5px 0;
+    display: block;
+  }
+
+  /* print button */
+  .print-btn {
+    position: fixed; bottom: 24px; right: 24px;
+    background: var(--ink); color: white;
+    border: none; border-radius: 50px;
+    padding: 10px 20px; font-size: .82rem;
+    font-family: 'Inter', sans-serif;
+    cursor: pointer; z-index: 100;
+    box-shadow: 0 4px 16px rgba(0,0,0,.25);
+    transition: transform .15s;
+  }
+  .print-btn:hover { transform: translateY(-2px); }
+
+  @media (max-width: 700px) {
+    .page { padding: 20px; }
+    .grid-2, .grid-3, .eq-types, .method-grid { grid-template-columns: 1fr; }
+    .cover { flex-direction: column; }
+    .video-grid { grid-template-columns: repeat(3, 1fr); }
+  }
+</style>
+</head>
+<body>
+
+<button class="print-btn no-print" onclick="window.print()">🖨 Imprimir / PDF</button>
+
+<!-- ═══════════════════════════════════════════════════════════ PORTADA -->
+<div class="cover">
+  <div>
+    <div class="cover-title">Geometría<br>en el Espacio</div>
+    <div class="cover-sub">2º Bachillerato · PAU · ℝ³</div>
+  </div>
+  <div class="cover-index">
+    <div class="idx-item"><span class="idx-dot" style="background:#a78bfa"></span>① Vectores en el espacio</div>
+    <div class="idx-item"><span class="idx-dot" style="background:#38bdf8"></span>② Rectas y planos</div>
+    <div class="idx-item"><span class="idx-dot" style="background:#34d399"></span>③ Posiciones relativas</div>
+    <div class="idx-item"><span class="idx-dot" style="background:#fbbf24"></span>④ Cálculo de distancias</div>
+    <div class="idx-item"><span class="idx-dot" style="background:#f87171"></span>⑤ Rectas que se cruzan</div>
+    <div style="margin-top:16px; border-top:1px solid rgba(255,255,255,.2); padding-top:12px">
+      <div style="font-size:.78rem; color:rgba(255,255,255,.7); margin-bottom:8px; text-transform:uppercase; letter-spacing:.05em">Ejercicios interactivos con IA</div>
+      <a href="https://m4r14bravo.github.io/2bachillerato_geometria/" target="_blank" style="text-decoration:none; display:inline-block">
+        <div style="background:rgba(255,255,255,.15); border-radius:8px; padding:8px 12px; display:flex; align-items:center; gap:10px">
+          <div>
+            <div style="color:white; font-weight:600; font-size:.82rem">🤖 App general — Geometría PAU</div>
+            <div style="color:rgba(255,255,255,.7); font-size:.72rem">Todos los tipos de ejercicios</div>
+          </div>
+          <div id="qr-app-general" style="flex-shrink:0"></div>
+        </div>
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════ 1. VECTORES -->
+<div class="page">
+  <div class="sec-header" style="color:var(--v1)">
+    <div class="sec-num" style="background:var(--v1)">①</div>
+    <div class="sec-title">Vectores en el Espacio</div>
+  </div>
+
+  <div class="grid-2">
+    <!-- Coordenadas, módulo, operaciones -->
+    <div>
+      <div class="subsec">Coordenadas y módulo</div>
+      <div class="card">
+        <div class="card-title">Dados A(a₁,a₂,a₃) y B(b₁,b₂,b₃)</div>
+        <div class="formula-box">
+          \(\vec{AB} = (b_1 - a_1,\; b_2 - a_2,\; b_3 - a_3)\)
+        </div>
+        <div class="formula-box" style="margin-top:6px">
+          \(|\vec{u}| = \sqrt{u_1^2 + u_2^2 + u_3^2}\)
+        </div>
+      </div>
+
+      <div class="subsec" style="margin-top:12px">Operaciones</div>
+      <table class="ops-table">
+        <tr><th>Operación</th><th>Resultado</th></tr>
+        <tr><td>Suma \(\vec{u}+\vec{v}\)</td><td>\((u_1+v_1,\; u_2+v_2,\; u_3+v_3)\)</td></tr>
+        <tr><td>Opuesto \(-\vec{u}\)</td><td>\((-u_1,-u_2,-u_3)\)</td></tr>
+        <tr><td>Diferencia \(\vec{u}-\vec{v}\)</td><td>\((u_1-v_1,\; u_2-v_2,\; u_3-v_3)\)</td></tr>
+        <tr><td>Escalar \(k\vec{u}\)</td><td>\((ku_1,\; ku_2,\; ku_3)\)</td></tr>
+      </table>
+
+      <div class="subsec" style="margin-top:12px">Puntos especiales (conocidos A y B)</div>
+      <div class="card" style="font-size:.83rem">
+        <p><b>Punto medio M</b></p>
+        <div class="formula-box">\(\overrightarrow{OM} = \overrightarrow{OA} + \tfrac{1}{2}\overrightarrow{AB}\)</div>
+        <p style="margin-top:8px"><b>Simétrico A' de A respecto a B</b></p>
+        <div class="formula-box">\(\overrightarrow{OA'} = \overrightarrow{OA} + 2\,\overrightarrow{AB}\)</div>
+        <p style="margin-top:8px"><b>División en k partes iguales</b></p>
+        <div class="formula-box">\(\overrightarrow{OM_i} = \overrightarrow{OA} + \tfrac{i}{k}\,\overrightarrow{AB}\quad(i=1,\ldots,k-1)\)</div>
+        <!-- SVG división en k partes -->
+        <div style="display:flex;justify-content:center;margin-top:10px">
+          <svg width="230" height="70" viewBox="0 0 230 70">
+            <defs>
+              <marker id="dk1" markerWidth="5" markerHeight="5" refX="4" refY="2.5" orient="auto"><path d="M0,0 L5,2.5 L0,5 Z" fill="#7c3aed"/></marker>
+            </defs>
+            <!-- inclined segment A to B, rising left to right -->
+            <line x1="15" y1="58" x2="215" y2="18" stroke="#7c3aed" stroke-width="2.5" marker-end="url(#dk1)"/>
+            <!-- division points k=4: interpolate y = 58 - i*(58-18)/4 = 58 - i*10 -->
+            <circle cx="15"  cy="58" r="3.5" fill="#7c3aed"/>
+            <circle cx="65"  cy="48" r="3"   fill="#059669"/>
+            <circle cx="115" cy="38" r="3"   fill="#059669"/>
+            <circle cx="165" cy="28" r="3"   fill="#059669"/>
+            <circle cx="215" cy="18" r="3.5" fill="#7c3aed"/>
+            <!-- tick marks perpendicular to line (approx) -->
+            <line x1="62"  y1="44" x2="68"  y2="52" stroke="#059669" stroke-width="1.5"/>
+            <line x1="112" y1="34" x2="118" y2="42" stroke="#059669" stroke-width="1.5"/>
+            <line x1="162" y1="24" x2="168" y2="32" stroke="#059669" stroke-width="1.5"/>
+            <!-- labels below line -->
+            <text x="8"   y="68" font-size="9" fill="#7c3aed" font-weight="600">A</text>
+            <text x="57"  y="62" font-size="8" fill="#059669">M₁</text>
+            <text x="107" y="52" font-size="8" fill="#059669">M₂</text>
+            <text x="157" y="42" font-size="8" fill="#059669">M₃</text>
+            <text x="210" y="14" font-size="9" fill="#7c3aed" font-weight="600">B</text>
+            <text x="78"  y="10" font-size="8" fill="#6b6860">k = 4 partes iguales</text>
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- Dependencia lineal -->
+    <div>
+      <div class="subsec">Dependencia lineal</div>
+      <div class="def-box">
+        \(\vec{w} = k_1\vec{u}_1 + k_2\vec{u}_2 + \cdots + k_n\vec{u}_n\)<br>
+        <small>Un sistema es <b>l.d.</b> si alguno es combinación lineal de los demás. En caso contrario, son <b>l.i.</b></small>
+      </div>
+
+      <div class="subsec" style="margin-top:10px">Dos vectores \(\vec{u}=(u_1,u_2,u_3)\) y \(\vec{v}=(v_1,v_2,v_3)\)</div>
+      <div class="card">
+        <div class="card-title">Las siguientes afirmaciones son equivalentes</div>
+        <!-- SVG: ld vs li para 2 vectores -->
+        <div style="display:flex;gap:16px;margin-bottom:8px;align-items:center">
+          <div class="svg-item">
+            <svg width="80" height="58" viewBox="0 0 80 58">
+              <defs>
+                <marker id="arr1" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#7c3aed"/></marker>
+                <marker id="arr2" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#0284c7"/></marker>
+              </defs>
+              <!-- ū: base (10,45), direction (40,-25) -->
+              <line x1="10" y1="45" x2="50" y2="20" stroke="#7c3aed" stroke-width="2" marker-end="url(#arr1)"/>
+              <!-- v̄: same direction, different base (28,52) → (68,27) -->
+              <line x1="28" y1="52" x2="65" y2="29" stroke="#0284c7" stroke-width="2" stroke-dasharray="4,2" marker-end="url(#arr2)"/>
+              <g><line x1="52" y1="9" x2="57" y2="9" stroke="#7c3aed" stroke-width="1.2"/><path d="M56,7 L60,9 L56,11 Z" fill="#7c3aed"/><text x="52" y="17" font-size="9" fill="#7c3aed" font-style="italic" font-family="sans-serif" >u</text></g>
+              <g><line x1="67" y1="19" x2="72" y2="19" stroke="#0284c7" stroke-width="1.2"/><path d="M71,17 L75,19 L71,21 Z" fill="#0284c7"/><text x="67" y="27" font-size="9" fill="#0284c7" font-style="italic" font-family="sans-serif" >v</text></g>
+              <text x="2" y="57" font-size="8" fill="#6b6860">l.d.</text>
+            </svg>
+            <div class="svg-caption">paralelos</div>
+          </div>
+          <div class="svg-item">
+            <svg width="80" height="58" viewBox="0 0 80 58">
+              <defs>
+                <marker id="arr3" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#7c3aed"/></marker>
+                <marker id="arr4" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#0284c7"/></marker>
+              </defs>
+              <line x1="10" y1="48" x2="55" y2="15" stroke="#7c3aed" stroke-width="2" marker-end="url(#arr3)"/>
+              <line x1="10" y1="48" x2="68" y2="40" stroke="#0284c7" stroke-width="2" marker-end="url(#arr4)"/>
+              <g><line x1="57" y1="5" x2="62" y2="5" stroke="#7c3aed" stroke-width="1.2"/><path d="M61,3 L65,5 L61,7 Z" fill="#7c3aed"/><text x="57" y="13" font-size="9" fill="#7c3aed" font-style="italic" font-family="sans-serif" >u</text></g>
+              <g><line x1="70" y1="32" x2="75" y2="32" stroke="#0284c7" stroke-width="1.2"/><path d="M74,30 L78,32 L74,34 Z" fill="#0284c7"/><text x="70" y="40" font-size="9" fill="#0284c7" font-style="italic" font-family="sans-serif" >v</text></g>
+              <text x="2" y="57" font-size="8" fill="#6b6860">l.i.</text>
+            </svg>
+            <div class="svg-caption">determinan plano</div>
+          </div>
+        </div>
+        <ul class="equiv-list">
+          <li>\(\vec{u}\) y \(\vec{v}\) son <b>l.d.</b> ↔ paralelos \(\vec{u}\parallel\vec{v}\)</li>
+          <li>\(\vec{u} = k\vec{v}\) (proporcionales)</li>
+          <li>\(\text{rg}(A) = 1\quad\Leftrightarrow\quad\vec{u}\times\vec{v}=\vec{0}\)</li>
+        </ul>
+        <div class="def-box" style="margin-top:8px; font-size:.8rem">
+          <b>l.d.</b> ⟺ \(\text{rg}(A)=1\) &emsp; <b>l.i.</b> ⟺ \(\text{rg}(A)=2\)<br>
+          <small style="color:var(--muted)">(A no es cuadrada → no tiene determinante)</small>
+        </div>
+      </div>
+
+      <div class="subsec" style="margin-top:10px">Tres vectores</div>
+      <div class="card">
+        <div class="card-title">Son coplanarios (l.d.) si y solo si</div>
+        <ul class="equiv-list" style="font-size:.81rem">
+          <li>Alguno es comb. lineal de los otros dos: \(\vec{w}=k\vec{u}+m\vec{v}\)</li>
+          <li>Los tres vectores son <b>coplanarios</b></li>
+          <li>\(\text{rg}(A) < 3 \Rightarrow |A|=0\)</li>
+        </ul>
+        <div class="highlight-box" style="margin-top:8px">
+          <b>l.i. ⟺ |A| ≠ 0</b> &emsp; <b>l.d. ⟺ |A| = 0</b>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════ 1b. PRODUCTOS -->
+<div class="page">
+  <div class="sec-header" style="color:var(--v1)">
+    <div class="sec-num" style="background:var(--v1)">①</div>
+    <div class="sec-title">Productos de Vectores</div>
+  </div>
+
+  <!-- PRODUCTO ESCALAR -->
+  <div class="prod-header">
+    <span class="prod-tag" style="background:#0284c7">escalar</span>
+    <span class="prod-title">Producto Escalar &nbsp;\(\vec{u}\cdot\vec{v}\)</span>
+    <small style="color:var(--muted)">el resultado es un número</small>
+  </div>
+  <div class="grid-2">
+    <div>
+      <div class="card">
+        <div class="card-title">Definición y cálculo</div>
+        <div class="formula-box" style="background:var(--v2l); border-color:#7dd3fc">
+          \(\vec{u}\cdot\vec{v} = u_1v_1 + u_2v_2 + u_3v_3 = |\vec{u}||\vec{v}|\cos\alpha\)
+        </div>
+        <p style="font-size:.8rem; margin-top:6px">donde α es el ángulo entre \(\vec{u}\) y \(\vec{v}\).</p>
+      </div>
+      <div class="card" style="margin-top:8px">
+        <div class="card-title">Propiedades</div>
+        <ul class="prop-list" style="--v1:#0284c7">
+          <li>Si \(\vec{u}\cdot\vec{v}>0\) → ángulo agudo</li>
+          <li>Si \(\vec{u}\cdot\vec{v}=0\) → \(\vec{u}\perp\vec{v}\) (o alguno es \(\vec{0}\))</li>
+          <li>Si \(\vec{u}\cdot\vec{v}<0\) → ángulo obtuso</li>
+          <li>Conmutativo: \(\vec{u}\cdot\vec{v}=\vec{v}\cdot\vec{u}\)</li>
+          <li>Asociativo escalar: \(k(\vec{u}\cdot\vec{v})=(k\vec{u})\cdot\vec{v}\)</li>
+          <li>Distributivo: \(\vec{u}\cdot(\vec{v}+\vec{w})=\vec{u}\cdot\vec{v}+\vec{u}\cdot\vec{w}\)</li>
+          <li>\(|\vec{u}|^2 = \vec{u}\cdot\vec{u}\)</li>
+        </ul>
+      </div>
+    </div>
+    <div>
+      <div class="card">
+        <div class="card-title">Aplicaciones</div>
+        <!-- SVG ángulo entre vectores -->
+        <div style="display:flex;justify-content:center;margin:4px 0 8px">
+          <svg width="160" height="100" viewBox="0 0 160 100">
+            <defs>
+              <marker id="ae1" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#7c3aed"/></marker>
+              <marker id="ae2" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#0284c7"/></marker>
+            </defs>
+            <line x1="20" y1="80" x2="130" y2="25" stroke="#7c3aed" stroke-width="2" marker-end="url(#ae1)"/>
+            <line x1="20" y1="80" x2="150" y2="70" stroke="#0284c7" stroke-width="2" marker-end="url(#ae2)"/>
+            <path d="M 50,80 A 30,30 0 0,1 38,56" fill="none" stroke="#d97706" stroke-width="1.5"/>
+            <text x="52" y="68" font-size="10" fill="#d97706" font-family="serif">α</text>
+            <g><line x1="132" y1="13" x2="138" y2="13" stroke="#7c3aed" stroke-width="1.2"/><path d="M137,11 L141,13 L137,15 Z" fill="#7c3aed"/><text x="132" y="23" font-size="11" fill="#7c3aed" font-style="italic" font-family="sans-serif" >u</text></g>
+            <g><line x1="152" y1="62" x2="158" y2="62" stroke="#0284c7" stroke-width="1.2"/><path d="M157,60 L161,62 L157,64 Z" fill="#0284c7"/><text x="152" y="72" font-size="11" fill="#0284c7" font-style="italic" font-family="sans-serif" >v</text></g>
+          </svg>
+        </div>
+        <p style="font-size:.82rem; margin-top:8px"><b>Ángulo entre dos vectores:</b></p>
+        <div class="formula-box">\(\cos\alpha = \dfrac{\vec{u}\cdot\vec{v}}{|\vec{u}||\vec{v}|} = \dfrac{u_1v_1+u_2v_2+u_3v_3}{|\vec{u}||\vec{v}|}\)</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sep"></div>
+
+  <!-- PRODUCTO VECTORIAL -->
+  <div class="prod-header">
+    <span class="prod-tag" style="background:#059669">vectorial</span>
+    <span class="prod-title">Producto Vectorial &nbsp;\(\vec{u}\times\vec{v}\)</span>
+    <small style="color:var(--muted)">el resultado es un vector</small>
+  </div>
+  <div class="grid-2">
+    <div>
+      <div class="card">
+        <div class="card-title">Definición y cálculo</div>
+        <div class="formula-box" style="background:var(--v3l); border-color:#6ee7b7">
+          \(\vec{u}\times\vec{v} = \begin{vmatrix}\vec{i}&\vec{j}&\vec{k}\\u_1&u_2&u_3\\v_1&v_2&v_3\end{vmatrix}\)
+        </div>
+        <p style="font-size:.8rem; margin-top:6px">Su <b>sentido</b>: el de un tornillo que gira desde \(\vec{u}\) hacia \(\vec{v}\) recorriendo el menor ángulo posible. <b>Perpendicular</b> al plano formado por \(\vec{u}\) y \(\vec{v}\).</p>
+        <div class="card-title" style="margin-top:8px">Propiedades</div>
+        <ul class="prop-list" style="--v1:#059669">
+          <li>\(\vec{u}\times\vec{u} = \vec{0}\)</li>
+          <li>Anticonmutativo: \(\vec{u}\times\vec{v} = -\vec{v}\times\vec{u}\)</li>
+          <li>Asociativo escalar: \(k(\vec{u}\times\vec{v}) = (k\vec{u})\times\vec{v}\)</li>
+          <li>Distributivo: \(\vec{u}\times(\vec{v}+\vec{w}) = \vec{u}\times\vec{v} + \vec{u}\times\vec{w}\)</li>
+          <li>Si \(\vec{u}\parallel\vec{v}\) → \(\vec{u}\times\vec{v}=\vec{0}\)</li>
+        </ul>
+      </div>
+    </div>
+    <div>
+      <div class="card">
+        <div class="card-title">Aplicaciones geométricas</div>
+        <!-- SVG paralelogramo -->
+        <div style="display:flex;gap:8px;justify-content:center;margin:4px 0 8px">
+          <div class="svg-item">
+            <svg width="140" height="105" viewBox="0 0 140 105">
+              <defs>
+                <marker id="av1" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#7c3aed"/></marker>
+                <marker id="av2" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#0284c7"/></marker>
+                <marker id="av3" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#059669"/></marker>
+              </defs>
+              <!-- parallelogram -->
+              <polygon points="20,80 100,80 120,40 40,40" fill="#ede9fe" stroke="#7c3aed" stroke-width="1" opacity=".6"/>
+              <!-- u -->
+              <line x1="20" y1="80" x2="98" y2="80" stroke="#7c3aed" stroke-width="2" marker-end="url(#av1)"/>
+              <!-- v -->
+              <line x1="20" y1="80" x2="38" y2="42" stroke="#0284c7" stroke-width="2" marker-end="url(#av2)"/>
+              <!-- normal -->
+              <line x1="60" y1="60" x2="60" y2="18" stroke="#059669" stroke-width="2" stroke-dasharray="4,2" marker-end="url(#av3)"/>
+              <g><line x1="100" y1="84" x2="105" y2="84" stroke="#7c3aed" stroke-width="1.2"/><path d="M104,82 L108,84 L104,86 Z" fill="#7c3aed"/><text x="100" y="93" font-size="10" fill="#7c3aed" font-style="italic" font-family="sans-serif" >u</text></g>
+              <g><line x1="28" y1="29" x2="33" y2="29" stroke="#0284c7" stroke-width="1.2"/><path d="M32,27 L36,29 L32,31 Z" fill="#0284c7"/><text x="28" y="38" font-size="10" fill="#0284c7" font-style="italic" font-family="sans-serif" >v</text></g>
+              <text x="63" y="16" font-size="10" fill="#059669" font-style="italic" font-family="sans-serif">u&#x2009;× v</text>
+              <text x="55" y="68" font-size="9" fill="#6b6860">A</text>
+            </svg>
+            <div class="svg-caption">Área paralelogramo = |u&#x20D7; &times; v&#x20D7;|</div>
+          </div>
+          <div class="svg-item">
+            <svg width="100" height="105" viewBox="0 0 100 105">
+              <defs>
+                <marker id="at1" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#7c3aed"/></marker>
+                <marker id="at2" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#0284c7"/></marker>
+              </defs>
+              <polygon points="15,80 85,80 50,25" fill="#d1fae5" stroke="#059669" stroke-width="1.2"/>
+              <line x1="15" y1="80" x2="83" y2="80" stroke="#7c3aed" stroke-width="2" marker-end="url(#at1)"/>
+              <line x1="15" y1="80" x2="48" y2="27" stroke="#0284c7" stroke-width="2" marker-end="url(#at2)"/>
+              <g><line x1="86" y1="82" x2="91" y2="82" stroke="#7c3aed" stroke-width="1.2"/><path d="M90,80 L94,82 L90,84 Z" fill="#7c3aed"/><text x="86" y="90" font-size="9" fill="#7c3aed" font-style="italic" font-family="sans-serif" >u</text></g>
+              <g><line x1="36" y1="14" x2="41" y2="14" stroke="#0284c7" stroke-width="1.2"/><path d="M40,12 L44,14 L40,16 Z" fill="#0284c7"/><text x="36" y="22" font-size="9" fill="#0284c7" font-style="italic" font-family="sans-serif" >v</text></g>
+            </svg>
+            <div class="svg-caption">Área triángulo = ½|u&#x20D7; &times; v&#x20D7;|</div>
+          </div>
+        </div>
+        <div class="formula-box" style="background:var(--v3l); border-color:#6ee7b7">
+          \(A_{\text{paralelogr.}} = |\vec{u}\times\vec{v}|\)
+        </div>
+        <div class="formula-box" style="margin-top:6px">
+          \(A_{\triangle} = \tfrac{1}{2}|\vec{u}\times\vec{v}|\)
+        </div>
+        <p style="font-size:.8rem; margin-top:6px">Si queremos \(\vec{w}\) perpendicular al plano de \(\vec{u}\) y \(\vec{v}\) <b>unitario</b>:</p>
+        <div class="formula-box">\(\hat{w} = \dfrac{\vec{u}\times\vec{v}}{|\vec{u}\times\vec{v}|}\)</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sep"></div>
+
+  <!-- PRODUCTO MIXTO -->
+  <div class="prod-header">
+    <span class="prod-tag" style="background:#d97706">mixto</span>
+    <span class="prod-title">Producto Mixto &nbsp;\([\vec{u},\vec{v},\vec{w}]\)</span>
+    <small style="color:var(--muted)">el resultado es un número</small>
+  </div>
+  <div class="grid-2">
+    <div>
+      <div class="card">
+        <div class="card-title">Definición y cálculo</div>
+        <div class="formula-box" style="background:var(--v4l); border-color:#fcd34d">
+          \([\vec{u},\vec{v},\vec{w}] = \vec{u}\cdot(\vec{v}\times\vec{w}) = \begin{vmatrix}u_1&u_2&u_3\\v_1&v_2&v_3\\w_1&w_2&w_3\end{vmatrix}\)
+        </div>
+        <p style="font-size:.8rem; margin-top:6px">Tres vectores no coplanarios definen un paralelepípedo. El producto mixto (tomando valor absoluto) da su <b>volumen</b>.</p>
+      </div>
+      <div class="card" style="margin-top:8px">
+        <div class="card-title">Coplanaridad</div>
+        <div class="highlight-box">
+          \([\vec{u},\vec{v},\vec{w}] = 0 \Leftrightarrow\) los tres vectores son <b>coplanarios</b>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="card">
+        <div class="card-title">Aplicaciones de volumen</div>
+        <!-- SVG prisma cuadrangular oblicuo — vectores NO ortogonales -->
+        <div style="display:flex;justify-content:center;margin:4px 0 8px">
+          <svg width="170" height="130" viewBox="0 0 170 130">
+            <defs>
+              <marker id="am1" markerWidth="5" markerHeight="5" refX="4" refY="2.5" orient="auto"><path d="M0,0 L5,2.5 L0,5 Z" fill="#7c3aed"/></marker>
+              <marker id="am2" markerWidth="5" markerHeight="5" refX="4" refY="2.5" orient="auto"><path d="M0,0 L5,2.5 L0,5 Z" fill="#0284c7"/></marker>
+              <marker id="am3" markerWidth="5" markerHeight="5" refX="4" refY="2.5" orient="auto"><path d="M0,0 L5,2.5 L0,5 Z" fill="#059669"/></marker>
+              <marker id="amh" markerWidth="5" markerHeight="5" refX="4" refY="2.5" orient="auto"><path d="M0,0 L5,2.5 L0,5 Z" fill="#d97706"/></marker>
+            </defs>
+            <!--
+              Base parallelogram (ū, v̄): origin O=(30,110)
+              ū: O→(105,110)  dx=75, dy=0
+              v̄: O→(55,80)   dx=25, dy=-30  (oblique, non-orthogonal)
+              w̄: O→(50,42)   dx=20, dy=-68  (goes up-left, oblique)
+              Full 8 vertices:
+                O   = (30,110)
+                O+u = (105,110)
+                O+v = (55, 80)
+                O+u+v=(130, 80)
+                O+w = (50, 42)
+                O+u+w=(125, 42)
+                O+v+w=(75, 12)
+                O+u+v+w=(150,12)
+            -->
+            <!-- back faces (dashed) -->
+            <polygon points="50,42 125,42 150,12 75,12" fill="#d1fae5" stroke="#059669" stroke-width="0.8" stroke-dasharray="3,2" opacity=".5"/>
+            <line x1="55" y1="80" x2="75" y2="12"  stroke="#aaa" stroke-width="0.8" stroke-dasharray="3,2"/>
+            <line x1="55" y1="80" x2="50" y2="42"  stroke="#aaa" stroke-width="0.8" stroke-dasharray="3,2"/>
+            <line x1="30" y1="110" x2="50" y2="42" stroke="#aaa" stroke-width="0.8" stroke-dasharray="3,2"/>
+            <!-- front bottom face -->
+            <polygon points="30,110 105,110 130,80 55,80" fill="#ede9fe" stroke="#7c3aed" stroke-width="1" opacity=".6"/>
+            <!-- front left face -->
+            <polygon points="30,110 55,80 75,12 50,42" fill="#e0f2fe" stroke="#0284c7" stroke-width="1" opacity=".5"/>
+            <!-- front right + top visible edges -->
+            <line x1="105" y1="110" x2="125" y2="42" stroke="#888" stroke-width="1"/>
+            <line x1="130" y1="80"  x2="150" y2="12" stroke="#888" stroke-width="1"/>
+            <line x1="125" y1="42"  x2="150" y2="12" stroke="#888" stroke-width="1"/>
+            <line x1="125" y1="42"  x2="75"  y2="12" stroke="#888" stroke-width="1"/>
+            <line x1="150" y1="12"  x2="75"  y2="12" stroke="#888" stroke-width="1"/>
+            <line x1="50"  y1="42"  x2="125" y2="42" stroke="#888" stroke-width="1"/>
+            <!-- height line (oblique prism: h is vertical projection, not along w) -->
+            <line x1="55" y1="80" x2="55" y2="27" stroke="#d97706" stroke-width="1.5" stroke-dasharray="4,2" marker-end="url(#amh)"/>
+            <rect x="55" y="75" width="6" height="6" fill="none" stroke="#d97706" stroke-width="1"/>
+            <!-- vectors from O -->
+            <line x1="30" y1="110" x2="103" y2="110" stroke="#7c3aed" stroke-width="2.5" marker-end="url(#am1)"/>
+            <line x1="30" y1="110" x2="53"  y2="82"  stroke="#0284c7" stroke-width="2.5" marker-end="url(#am2)"/>
+            <line x1="30" y1="110" x2="48"  y2="44"  stroke="#059669" stroke-width="2.5" marker-end="url(#am3)"/>
+            <!-- labels -->
+            <g><line x1="105" y1="114" x2="111" y2="114" stroke="#7c3aed" stroke-width="1.2"/><path d="M110,112 L114,114 L110,116 Z" fill="#7c3aed"/><text x="105" y="124" font-size="11" fill="#7c3aed" font-style="italic" font-family="sans-serif" >u</text></g>
+            <g><line x1="34" y1="66" x2="40" y2="66" stroke="#0284c7" stroke-width="1.2"/><path d="M39,64 L43,66 L39,68 Z" fill="#0284c7"/><text x="34" y="76" font-size="11" fill="#0284c7" font-style="italic" font-family="sans-serif" >v</text></g>
+            <g><line x1="22" y1="36" x2="28" y2="36" stroke="#059669" stroke-width="1.2"/><path d="M27,34 L31,36 L27,38 Z" fill="#059669"/><text x="22" y="46" font-size="11" fill="#059669" font-style="italic" font-family="sans-serif" >w</text></g>
+            <text x="59"  y="57"  font-size="10" fill="#d97706" font-weight="600">h</text>
+            <text x="22"  y="124" font-size="9"  fill="#6b6860">O</text>
+          </svg>
+        </div>
+        <p style="font-size:.76rem; color:var(--muted); text-align:center; margin-bottom:6px"></p>
+        <div class="formula-box" style="background:var(--v4l); border-color:#fcd34d">
+          \(V_{\text{paralelepípedo}} = |[\vec{u},\vec{v},\vec{w}]|\)
+        </div>
+        <div class="formula-box" style="margin-top:6px">
+          \(V_{\text{pirámide triangular}} = \tfrac{1}{6}|[\vec{u},\vec{v},\vec{w}]|\)
+        </div>
+        <div class="formula-box" style="margin-top:6px">
+          \(V_{\text{pirámide cuadrang.}} = \tfrac{1}{3} \cdot A_{\text{base}} \cdot h\)
+        </div>
+        <p style="font-size:.77rem; margin-top:6px; color:var(--muted)">La base es el paralelogramo formado por \(\vec{u}\) y \(\vec{v}\) (área \(= |\vec{u}\times\vec{v}|\)). La altura h es la proyección perpendicular de \(\vec{w}\) sobre la base.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════ 2. RECTAS Y PLANOS -->
+<div class="page">
+  <div class="sec-header" style="color:var(--v2)">
+    <div class="sec-num" style="background:var(--v2)">②</div>
+    <div class="sec-title">Ecuaciones de Rectas y Planos</div>
+  </div>
+
+  <!-- RECTA -->
+  <div class="subsec">Recta en el espacio</div>
+  <p style="font-size:.83rem">Conocemos: punto \(A(a_1,a_2,a_3)\) y vector director \(\vec{u}=(u_1,u_2,u_3)\).<br>
+  Desarrollamos \(\overrightarrow{OX} = \overrightarrow{OA} + \lambda\,\vec{u}\) e igualamos coordenadas.</p>
+
+  <div class="eq-types">
+    <div class="eq-card">
+      <div class="eq-label" style="color:var(--v2)">Vectorial</div>
+      <div class="formula-box">\((x,y,z) = (a_1,a_2,a_3) + \lambda(u_1,u_2,u_3)\)</div>
+    </div>
+    <div class="eq-card">
+      <div class="eq-label" style="color:var(--v2)">Paramétrica</div>
+      <div class="formula-box">
+        \(\begin{cases}x = a_1 + \lambda u_1\\y = a_2 + \lambda u_2\\z = a_3 + \lambda u_3\end{cases}\)
+      </div>
+    </div>
+    <div class="eq-card">
+      <div class="eq-label" style="color:var(--v2)">Continua</div>
+      <div class="formula-box">
+        \(\dfrac{x-a_1}{u_1} = \dfrac{y-a_2}{u_2} = \dfrac{z-a_3}{u_3}\)
+      </div>
+      <small>Igualamos cada cociente y despejamos λ</small>
+    </div>
+  </div>
+
+  <div class="highlight-box" style="margin-top:10px; font-size:.82rem">
+    ⚠️ <b>Precaución con la ecuación continua:</b> si alguna componente del vector director es cero, <em>no usar la forma continua</em> para evitar un denominador nulo.
+  </div>
+
+  <div class="card" style="margin-top:10px; border-left:3px solid var(--v2)">
+    <div class="card-title">Ecuaciones implícitas (recta como corte de dos planos)</div>
+    <p style="font-size:.83rem">Igualando dos a dos los cocientes de la ecuación continua se obtienen las ecuaciones de dos planos cuya intersección es la recta:</p>
+    <div class="formula-box" style="margin-top:6px">
+      \(\begin{cases}a_1x + b_1y + c_1z + d_1 = 0 \\ a_2x + b_2y + c_2z + d_2 = 0\end{cases}\)
+    </div>
+    <p style="font-size:.78rem; margin-top:6px; color:var(--muted)">Ejemplo: de \(\frac{x-1}{2}=\frac{y+1}{3}\) se obtiene \(3x-2y-5=0\). La segunda ecuación, igualando otro par de cocientes. Son las ecuaciones de dos planos que se cortan en la recta.</p>
+  </div>
+
+  <div class="subsec" style="margin-top:18px">Cuestiones básicas sobre la recta</div>
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-title">¿Pertenece el punto A(a,b,c) a la recta?</div>
+      <p style="font-size:.83rem">Sus coordenadas deben satisfacer la ecuación de la recta → sustituimos y comprobamos.</p>
+      <p style="font-size:.78rem; color:var(--muted); margin-top:4px">Ejemplo: ¿Pertenece A(4,−4,4) a r? Sustituir en las ecuaciones → ¿Se cumple?</p>
+    </div>
+    <div class="card">
+      <div class="card-title">¿Están tres puntos alineados?</div>
+      <p style="font-size:.83rem">Comprobar si \(\overrightarrow{AB}\) y \(\overrightarrow{BC}\) son proporcionales.</p>
+      <div class="formula-box" style="margin-top:6px">
+        Método 1: \(\overrightarrow{AB} = k\,\overrightarrow{BC}\)<br>
+        Método 2: Ecuación de la recta AB → ¿C pertenece?
+      </div>
+    </div>
+  </div>
+
+  <!-- PLANO -->
+  <div class="subsec" style="margin-top:20px">Plano en el espacio</div>
+  <p style="font-size:.83rem">Conocemos: punto \(A(a_1,a_2,a_3)\) y dos vectores directores \(\vec{u}=(u_1,u_2,u_3)\), \(\vec{v}=(v_1,v_2,v_3)\).</p>
+
+  <!-- SVG plano con punto y vectores directores -->
+  <div style="display:flex;justify-content:center;margin:10px 0 8px">
+    <svg width="240" height="130" viewBox="0 0 240 130">
+      <defs>
+        <marker id="pu1" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#7c3aed"/></marker>
+        <marker id="pu2" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#0284c7"/></marker>
+        <marker id="pn"  markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#059669"/></marker>
+      </defs>
+      <!-- plane parallelogram -->
+      <polygon points="15,115 175,115 215,55 55,55" fill="#e0f2fe" stroke="#0284c7" stroke-width="1.2" opacity=".6"/>
+      <!-- A point -->
+      <circle cx="90" cy="90" r="4.5" fill="#7c3aed"/>
+      <text x="74" y="108" font-size="11" fill="#7c3aed" font-weight="700" font-family="sans-serif">A</text>
+      <!-- ū vector -->
+      <line x1="90" y1="90" x2="158" y2="90" stroke="#7c3aed" stroke-width="2.5" marker-end="url(#pu1)"/>
+      <g><line x1="163" y1="82" x2="170" y2="82" stroke="#7c3aed" stroke-width="1.2"/><path d="M169,80 L173,82 L169,84 Z" fill="#7c3aed"/><text x="163" y="94" font-size="13" fill="#7c3aed" font-style="italic" font-family="sans-serif" >u</text></g>
+      <!-- v̄ vector -->
+      <line x1="90" y1="90" x2="116" y2="60" stroke="#0284c7" stroke-width="2.5" marker-end="url(#pu2)"/>
+      <g><line x1="120" y1="46" x2="127" y2="46" stroke="#0284c7" stroke-width="1.2"/><path d="M126,44 L130,46 L126,48 Z" fill="#0284c7"/><text x="120" y="58" font-size="13" fill="#0284c7" font-style="italic" font-family="sans-serif" >v</text></g>
+      <!-- normal n: draw arrow then label with SVG text + overline trick -->
+      <line x1="90" y1="90" x2="90" y2="22" stroke="#059669" stroke-width="2.2" stroke-dasharray="5,2" marker-end="url(#pn)"/>
+      <!-- right angle mark at base of normal -->
+      <rect x="90" y="83" width="7" height="7" fill="none" stroke="#059669" stroke-width="1.3"/>
+      <!-- n label: letter + arrow drawn manually above -->
+      <text x="98" y="38" font-size="13" fill="#059669" font-weight="bold" font-family="serif">n</text>
+      <!-- manual arrow over n: short line + tiny arrowhead -->
+      <line x1="97" y1="27" x2="108" y2="27" stroke="#059669" stroke-width="1.3"/>
+      <path d="M106,24 L110,27 L106,30 Z" fill="#059669"/>
+      <!-- = ū×v̄ -->
+      <text x="113" y="38" font-size="11" fill="#059669" font-style="italic" font-family="sans-serif"> = u × v</text>
+      <!-- plane label -->
+      <text x="22" y="112" font-size="13" fill="#0284c7" font-family="serif" font-style="italic">π</text>
+    </svg>
+  </div>
+
+  <div class="grid-2" style="margin-top:4px">
+    <div>
+      <div class="card">
+        <div class="card-title">Ecuación paramétrica del plano</div>
+        <div class="formula-box">
+          \(\begin{cases}x = a_1 + \lambda u_1 + \mu v_1\\y = a_2 + \lambda u_2 + \mu v_2\\z = a_3 + \lambda u_3 + \mu v_3\end{cases}\)
+        </div>
+        <small>Como el vector \(\overrightarrow{AX}\) es combinación lineal de \(\vec{u}\) y \(\vec{v}\), el determinante de los 3 vectores que forman las coordenadas será nulo</small>
+      </div>
+    </div>
+    <div>
+      <div class="card">
+        <div class="card-title">Ecuación general del plano</div>
+        <div class="formula-box">\(\pi: Ax + By + Cz + D = 0\)</div>
+        <p style="margin-top:8px; font-size:.82rem">Desarrollando y simplificando obtenemos la forma general. Los coeficientes \((A,B,C)\) son las coordenadas del <b>vector normal</b> \(\vec{n}\).</p>
+        <div class="formula-box" style="margin-top:6px; background: var(--v3l); border-color: #6ee7b7">
+          \(\vec{n} = (A,B,C) \perp \pi\)
+        </div>
+        <div class="highlight-box" style="margin-top:6px; font-size:.78rem">
+          Para calcular \(\vec{n}\): \(\vec{n} = \vec{u}\times\vec{v}\)
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="subsec" style="margin-top:18px">Planos coordenados</div>
+  <div class="grid-3" style="font-size:.82rem">
+    <div class="card"><b>Plano XY</b> (\(z=0\)): &nbsp;\(\pi_{xy}: z = 0\)</div>
+    <div class="card"><b>Plano XZ</b> (\(y=0\)): &nbsp;\(\pi_{xz}: y = 0\)</div>
+    <div class="card"><b>Plano YZ</b> (\(x=0\)): &nbsp;\(\pi_{yz}: x = 0\)</div>
+  </div>
+
+  <div class="subsec" style="margin-top:18px">Cuestiones básicas sobre el plano</div>
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-title">¿Pertenece un punto al plano?</div>
+      <p style="font-size:.83rem">Sustituir las coordenadas en \(Ax+By+Cz+D=0\) y comprobar que se satisface.</p>
+    </div>
+    <div class="card">
+      <div class="card-title">¿Cómo sabemos si un punto está en una recta?</div>
+      <p style="font-size:.83rem">Sus coordenadas deben satisfacer la ecuación de la recta. Si la recta viene como intersección de dos planos, debe satisfacer ambas ecuaciones simultáneamente.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════ 3. POSICIONES RELATIVAS -->
+<div class="page">
+  <div class="sec-header" style="color:var(--v3)">
+    <div class="sec-num" style="background:var(--v3)">③</div>
+    <div class="sec-title">Posiciones Relativas</div>
+  </div>
+
+  <!-- Dos rectas -->
+  <div class="subsec">Entre dos rectas</div>
+  <p style="font-size:.82rem">Recta \(r\): punto A, director \(\vec{u}\) &emsp; Recta \(s\): punto B, director \(\vec{v}\)</p>
+
+  <!-- SVG 4 posiciones rectas -->
+  <div class="svg-row" style="margin:10px 0 12px">
+    <div class="svg-item">
+      <svg width="110" height="75" viewBox="0 0 110 75">
+        <defs>
+          <marker id="rp1a" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#7c3aed"/></marker>
+          <marker id="rp1b" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#0284c7"/></marker>
+        </defs>
+        <line x1="8" y1="55" x2="100" y2="28" stroke="#7c3aed" stroke-width="2.2" marker-end="url(#rp1a)"/>
+        <line x1="8" y1="68" x2="100" y2="41" stroke="#0284c7" stroke-width="2.2" marker-end="url(#rp1b)"/>
+        <text x="5"  y="50" font-size="11" fill="#7c3aed" font-weight="bold" font-family="sans-serif">r</text>
+        <text x="5"  y="66" font-size="11" fill="#0284c7" font-weight="bold" font-family="sans-serif">s</text>
+      </svg>
+      <div class="svg-caption">Paralelas<br><small>dir. proporcionales, A∉s</small></div>
+    </div>
+    <div class="svg-item">
+      <svg width="110" height="75" viewBox="0 0 110 75">
+        <defs>
+          <marker id="rp2a" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#7c3aed"/></marker>
+        </defs>
+        <line x1="8"  y1="42" x2="100" y2="42" stroke="#7c3aed" stroke-width="2.2" marker-end="url(#rp2a)"/>
+        <line x1="8"  y1="42" x2="100" y2="42" stroke="#0284c7" stroke-width="1.2" stroke-dasharray="5,3"/>
+        <text x="5"  y="36" font-size="11" fill="#7c3aed" font-weight="bold" font-family="sans-serif">r</text>
+        <text x="40" y="57" font-size="11" fill="#0284c7" font-weight="bold" font-family="sans-serif">s≡r</text>
+      </svg>
+      <div class="svg-caption">Coincidentes<br><small>dir. proporcionales, A∈s</small></div>
+    </div>
+    <div class="svg-item">
+      <!-- secantes: lines actually cross at intersection point -->
+      <svg width="110" height="75" viewBox="0 0 110 75">
+        <defs>
+          <marker id="rp3a" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#7c3aed"/></marker>
+          <marker id="rp3b" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#0284c7"/></marker>
+        </defs>
+        <!-- r: from (8,65) to (102,18) — passes through (55,42) -->
+        <line x1="8"  y1="65" x2="102" y2="18" stroke="#7c3aed" stroke-width="2.2" marker-end="url(#rp3a)"/>
+        <!-- s: from (8,20) to (102,65) — passes through (55,42) -->
+        <line x1="8"  y1="20" x2="102" y2="65" stroke="#0284c7" stroke-width="2.2" marker-end="url(#rp3b)"/>
+        <!-- intersection at exactly (55,42) -->
+        <circle cx="55" cy="42" r="4" fill="#dc2626"/>
+        <text x="60" y="38" font-size="10" fill="#dc2626" font-weight="bold">P</text>
+        <text x="90" y="16" font-size="11" fill="#7c3aed" font-weight="bold" font-family="sans-serif">r</text>
+        <text x="90" y="68" font-size="11" fill="#0284c7" font-weight="bold" font-family="sans-serif">s</text>
+      </svg>
+      <div class="svg-caption">Secantes<br><small>dir. NO proporcionales, coplanarias</small></div>
+    </div>
+    <div class="svg-item">
+      <svg width="110" height="75" viewBox="0 0 110 75">
+        <defs>
+          <marker id="rp4a" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#7c3aed"/></marker>
+          <marker id="rp4b" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#0284c7"/></marker>
+        </defs>
+        <line x1="8"  y1="62" x2="100" y2="50" stroke="#7c3aed" stroke-width="2.2" marker-end="url(#rp4a)"/>
+        <line x1="30" y1="12" x2="100" y2="32" stroke="#0284c7" stroke-width="2.2" marker-end="url(#rp4b)"/>
+        <text x="5"  y="58" font-size="11" fill="#7c3aed" font-weight="bold" font-family="sans-serif">r</text>
+        <text x="26" y="10" font-size="11" fill="#0284c7" font-weight="bold" font-family="sans-serif">s</text>
+      </svg>
+      <div class="svg-caption">Se cruzan<br><small>dir. NO proporcionales, no coplan.</small></div>
+    </div>
+  </div>
+
+  <table class="pos-table">
+    <tr>
+      <th>Posición</th>
+      <th>Directores</th>
+      <th>Condición adicional</th>
+      <th>Producto mixto</th>
+    </tr>
+    <tr>
+      <td><span class="pos-badge" style="background:#dcfce7;color:#166534">Coincidentes</span></td>
+      <td>\(\vec{u} \parallel \vec{v}\)</td>
+      <td>A ∈ s</td>
+      <td>—</td>
+    </tr>
+    <tr>
+      <td><span class="pos-badge" style="background:#dbeafe;color:#1e40af">Paralelas</span></td>
+      <td>\(\vec{u} \parallel \vec{v}\)</td>
+      <td>A ∉ s</td>
+      <td>—</td>
+    </tr>
+    <tr>
+      <td><span class="pos-badge" style="background:#fef9c3;color:#854d0e">Secantes</span></td>
+      <td>\(\vec{u} \not\parallel \vec{v}\)</td>
+      <td>\(\vec{u},\vec{v},\overrightarrow{AB}\) coplanarios</td>
+      <td>\([\vec{u},\vec{v},\overrightarrow{AB}]=0\)</td>
+    </tr>
+    <tr>
+      <td><span class="pos-badge" style="background:#ffe4e6;color:#9f1239">Se cruzan</span></td>
+      <td>\(\vec{u} \not\parallel \vec{v}\)</td>
+      <td>\(\vec{u},\vec{v},\overrightarrow{AB}\) NO coplanarios</td>
+      <td>\([\vec{u},\vec{v},\overrightarrow{AB}]\neq 0\)</td>
+    </tr>
+  </table>
+
+  <!-- Recta y plano -->
+  <div class="subsec" style="margin-top:18px">Entre recta y plano</div>
+  <div style="display:flex;gap:16px;margin:10px 0 12px;flex-wrap:wrap">
+    <div class="svg-item">
+      <svg width="110" height="75" viewBox="0 0 110 75">
+        <polygon points="5,65 105,65 95,40 5,40" fill="#d1fae5" stroke="#059669" stroke-width="1.2" opacity=".7"/>
+        <line x1="20" y1="68" x2="80" y2="42" stroke="#059669" stroke-width="1.5"/>
+        <text x="82" y="42" font-size="9" fill="#059669">π</text>
+        <line x1="50" y1="55" x2="50" y2="18" stroke="#7c3aed" stroke-width="2" stroke-dasharray="4,2"/>
+        <line x1="20" y1="55" x2="80" y2="55" stroke="#7c3aed" stroke-width="2"/>
+        <text x="82" y="57" font-size="9" fill="#7c3aed">r</text>
+      </svg>
+      <div class="svg-caption">r contenida en π<br><small>rg=1</small></div>
+    </div>
+    <div class="svg-item">
+      <svg width="110" height="75" viewBox="0 0 110 75">
+        <polygon points="5,65 105,65 95,40 5,40" fill="#e0f2fe" stroke="#0284c7" stroke-width="1.2" opacity=".7"/>
+        <line x1="20" y1="68" x2="80" y2="42" stroke="#0284c7" stroke-width="1.5"/>
+        <text x="82" y="42" font-size="9" fill="#0284c7">π</text>
+        <line x1="15" y1="25" x2="95" y2="25" stroke="#7c3aed" stroke-width="2"/>
+        <text x="97" y="27" font-size="9" fill="#7c3aed">r</text>
+      </svg>
+      <div class="svg-caption">r paralela a π<br><small>rg=2, incompatible</small></div>
+    </div>
+    <div class="svg-item">
+      <svg width="110" height="75" viewBox="0 0 110 75">
+        <polygon points="5,65 105,65 95,40 5,40" fill="#fef3c7" stroke="#d97706" stroke-width="1.2" opacity=".7"/>
+        <line x1="20" y1="68" x2="80" y2="42" stroke="#d97706" stroke-width="1.5"/>
+        <text x="82" y="44" font-size="9" fill="#d97706">π</text>
+        <!-- r enters from top-left, clearly pierces plane, exits bottom -->
+        <line x1="25" y1="10" x2="75" y2="72" stroke="#7c3aed" stroke-width="2"/>
+        <!-- intersection: line x=25+50t, y=10+62t. plane midband y~52: t=(52-10)/62=0.677, x=25+33.9=59 -->
+        <circle cx="59" cy="52" r="3.5" fill="#dc2626"/>
+        <text x="63" y="50" font-size="9" fill="#dc2626">P</text>
+        <text x="77" y="72" font-size="9" fill="#7c3aed">r</text>
+      </svg>
+      <div class="svg-caption">r secante a π<br><small>rg=3, sol. única</small></div>
+    </div>
+  </div>
+  <div class="grid-3" style="margin-top:4px">
+    <div class="card" style="border-left:3px solid var(--v3); background:var(--v3l)">
+      <div class="card-title" style="color:#065f46">\(\text{rg}(M_1) = 1\)</div>
+      <p style="font-size:.8rem"><b>r contenida en π</b></p>
+    </div>
+    <div class="card" style="border-left:3px solid #0284c7; background:#e0f2fe">
+      <div class="card-title" style="color:#0c4a6e">\(\text{rg}(M_1) = 2\)</div>
+      <p style="font-size:.8rem"><b>r paralela a π</b></p>
+    </div>
+    <div class="card" style="border-left:3px solid #d97706; background:#fef3c7">
+      <div class="card-title" style="color:#78350f">\(\text{rg}(M_1) = 3\)</div>
+      <p style="font-size:.8rem"><b>r secante a π</b></p>
+    </div>
+  </div>
+
+  <!-- Análisis vectorial recta-plano -->
+  <div class="subsec" style="margin-top:16px">Análisis por vectores: director \(\vec{u}\) de la recta y normal \(\vec{n}\) del plano</div>
+  <p style="font-size:.82rem; margin-bottom:8px">Alternativa rápida a los rangos, basada en si \(\vec{u}\) y \(\vec{n}\) son perpendiculares.</p>
+  <div class="normals-grid">
+    <div class="normal-card" style="border-left:3px solid var(--v3); background:var(--v3l)">
+      <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px">
+        <span class="pos-badge" style="background:#dcfce7;color:#166534">r contenida en π</span>
+      </div>
+      <span class="normal-condition">\(\vec{u}\cdot\vec{n} = 0\)</span>
+      <span class="normal-condition">+ un punto de r ∈ π</span>
+      <p style="font-size:.78rem; color:var(--muted); margin-top:4px">Los vectores son perpendiculares <em>y</em> la recta pasa por el plano</p>
+    </div>
+    <div class="normal-card" style="border-left:3px solid #0284c7; background:#e0f2fe">
+      <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px">
+        <span class="pos-badge" style="background:#dbeafe;color:#1e40af">r paralela a π</span>
+      </div>
+      <span class="normal-condition">\(\vec{u}\cdot\vec{n} = 0\)</span>
+      <span class="normal-condition">+ un punto de r ∉ π</span>
+      <p style="font-size:.78rem; color:var(--muted); margin-top:4px">Los vectores son perpendiculares pero la recta no toca el plano</p>
+    </div>
+    <div class="normal-card" style="border-left:3px solid #d97706; background:#fef3c7">
+      <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px">
+        <span class="pos-badge" style="background:#fef9c3;color:#854d0e">r secante a π</span>
+      </div>
+      <span class="normal-condition">\(\vec{u}\cdot\vec{n} \neq 0\)</span>
+      <p style="font-size:.78rem; color:var(--muted); margin-top:4px">Los vectores <em>no</em> son perpendiculares → r y π tienen direcciones distintas y se cortan</p>
+    </div>
+  </div>
+  <div class="highlight-box" style="margin-top:10px; font-size:.82rem">
+    💡 <b>Clave:</b> \(\vec{u}\cdot\vec{n}=0\) significa que la recta es <em>paralela</em> al plano (o está contenida en él). Para distinguir: sustituir un punto de r en la ecuación del plano.
+  </div>
+
+  <!-- Dos planos -->
+  <div class="subsec" style="margin-top:18px">Entre dos planos</div>
+
+  <div style="display:flex;gap:16px;margin:10px 0 12px;flex-wrap:wrap">
+    <div class="svg-item">
+      <svg width="110" height="75" viewBox="0 0 110 75">
+        <polygon points="5,65 105,65 95,35 5,35" fill="#d1fae5" stroke="#059669" stroke-width="1.5" opacity=".7"/>
+        <polygon points="5,62 105,62 95,32 5,32" fill="#d1fae5" stroke="#059669" stroke-width="1.5" opacity=".5" stroke-dasharray="5,3"/>
+        <text x="82" y="32" font-size="9" fill="#059669">π₁≡π₂</text>
+      </svg>
+      <div class="svg-caption">Coincidentes<br><small>rg(M)=rg(M')=1</small></div>
+    </div>
+    <div class="svg-item">
+      <svg width="110" height="75" viewBox="0 0 110 75">
+        <polygon points="5,65 105,65 95,42 5,42" fill="#e0f2fe" stroke="#0284c7" stroke-width="1.5" opacity=".7"/>
+        <polygon points="5,50 105,50 95,27 5,27" fill="#dbeafe" stroke="#0284c7" stroke-width="1.5" opacity=".5"/>
+        <text x="82" y="42" font-size="9" fill="#0284c7">π₁</text>
+        <text x="82" y="27" font-size="9" fill="#0284c7">π₂</text>
+      </svg>
+      <div class="svg-caption">Paralelos<br><small>rg(M)=1,rg(M')=2</small></div>
+    </div>
+    <div class="svg-item">
+      <svg width="110" height="75" viewBox="0 0 110 75">
+        <polygon points="5,65 55,40 105,65" fill="#fef3c7" stroke="#d97706" stroke-width="1.2" opacity=".7"/>
+        <polygon points="5,35 55,60 105,35" fill="#fef9c3" stroke="#d97706" stroke-width="1.2" opacity=".7"/>
+        <line x1="5" y1="50" x2="105" y2="50" stroke="#dc2626" stroke-width="2"/>
+        <text x="50" y="46" font-size="8" fill="#dc2626">r</text>
+        <text x="82" y="35" font-size="9" fill="#d97706">π₁</text>
+        <text x="82" y="65" font-size="9" fill="#d97706">π₂</text>
+      </svg>
+      <div class="svg-caption">Secantes<br><small>rg(M)=rg(M')=2</small></div>
+    </div>
+  </div>
+
+  <div class="grid-3" style="margin-top:4px">
+    <div class="card" style="border-left:3px solid var(--v3); background:var(--v3l)">
+      <div class="card-title" style="color:#065f46">Coincidentes</div>
+      <p style="font-size:.8rem">\(\text{rg}(M)=\text{rg}(M')=1\)</p>
+    </div>
+    <div class="card" style="border-left:3px solid #0284c7; background:#e0f2fe">
+      <div class="card-title" style="color:#0c4a6e">Paralelos</div>
+      <p style="font-size:.8rem">\(\text{rg}(M)=1,\;\text{rg}(M')=2\)</p>
+    </div>
+    <div class="card" style="border-left:3px solid #d97706; background:#fef3c7">
+      <div class="card-title" style="color:#78350f">Secantes</div>
+      <p style="font-size:.8rem">\(\text{rg}(M)=\text{rg}(M')=2\)</p>
+    </div>
+  </div>
+
+  <!-- ANÁLISIS POR VECTORES NORMALES -->
+  <div class="subsec" style="margin-top:16px">Análisis por vectores normales \(\vec{n}_1=(A_1,B_1,C_1)\) y \(\vec{n}_2=(A_2,B_2,C_2)\)</div>
+  <p style="font-size:.82rem; margin-bottom:8px">Alternativa rápida a los rangos: se basa en si las normales son proporcionales o no.</p>
+  <div class="normals-grid">
+    <div class="normal-card" style="border-left:3px solid var(--v3); background:var(--v3l)">
+      <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px">
+        <span class="pos-badge" style="background:#dcfce7;color:#166534">Coincidentes</span>
+      </div>
+      <span class="normal-condition">\(\vec{n}_1 \parallel \vec{n}_2\)</span>
+      <span class="normal-condition">+ un punto de π₁ ∈ π₂</span>
+      <p style="font-size:.78rem; color:var(--muted); margin-top:4px">Las normales son proporcionales <em>y</em> comparten un punto</p>
+    </div>
+    <div class="normal-card" style="border-left:3px solid #0284c7; background:#e0f2fe">
+      <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px">
+        <span class="pos-badge" style="background:#dbeafe;color:#1e40af">Paralelos</span>
+      </div>
+      <span class="normal-condition">\(\vec{n}_1 \parallel \vec{n}_2\)</span>
+      <span class="normal-condition">+ un punto de π₁ ∉ π₂</span>
+      <p style="font-size:.78rem; color:var(--muted); margin-top:4px">Las normales son proporcionales pero los planos no coinciden</p>
+    </div>
+    <div class="normal-card" style="border-left:3px solid #d97706; background:#fef3c7">
+      <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px">
+        <span class="pos-badge" style="background:#fef9c3;color:#854d0e">Secantes</span>
+      </div>
+      <span class="normal-condition" style="font-size:.8rem">n&#x2081; <b>no</b> es proporcional a n&#x2082;</span>
+      <p style="font-size:.78rem; color:var(--muted); margin-top:4px">Las normales <em>no</em> son proporcionales → los planos se cortan en una recta</p>
+    </div>
+  </div>
+  <div class="highlight-box" style="margin-top:10px; font-size:.82rem">
+    💡 <b>Recordatorio:</b> \(\vec{n}_1 \parallel \vec{n}_2\) significa que existe \(k\in\mathbb{R}\) tal que \((A_1,B_1,C_1)=k(A_2,B_2,C_2)\), es decir, los coeficientes de una ecuación son proporcionales a los de la otra.
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════ 4. DISTANCIAS -->
+<div class="page">
+  <div class="sec-header" style="color:var(--v4)">
+    <div class="sec-num" style="background:var(--v4)">④</div>
+    <div class="sec-title">Cálculo de Distancias</div>
+  </div>
+
+  <div class="grid-2" style="align-items:start; gap:20px">
+    <!-- Punto-Recta -->
+    <div>
+      <div class="subsec">Punto A — Recta r</div>
+      <div class="card" style="border-left:3px solid var(--v2)">
+        <div class="card-title">Método 1 — Procedimiento geométrico</div>
+        <!-- SVG pie perpendicular recta -->
+        <div style="display:flex;justify-content:center;margin:4px 0 8px">
+          <svg width="180" height="90" viewBox="0 0 180 90">
+            <defs>
+              <marker id="dr1" markerWidth="5" markerHeight="5" refX="4" refY="2.5" orient="auto"><path d="M0,0 L5,2.5 L0,5 Z" fill="#0284c7"/></marker>
+              <marker id="dr2" markerWidth="5" markerHeight="5" refX="4" refY="2.5" orient="auto"><path d="M0,0 L5,2.5 L0,5 Z" fill="#d97706"/></marker>
+            </defs>
+            <line x1="15" y1="70" x2="165" y2="40" stroke="#0284c7" stroke-width="2" marker-end="url(#dr1)"/>
+            <text x="168" y="42" font-size="10" fill="#0284c7">r</text>
+            <!-- A point -->
+            <circle cx="55" cy="18" r="3.5" fill="#7c3aed"/>
+            <text x="44" y="15" font-size="10" fill="#7c3aed">A</text>
+            <!-- P foot -->
+            <circle cx="87" cy="57" r="3.5" fill="#dc2626"/>
+            <text x="91" y="57" font-size="10" fill="#dc2626">P</text>
+            <!-- distance line -->
+            <line x1="55" y1="18" x2="87" y2="57" stroke="#d97706" stroke-width="2" stroke-dasharray="4,2" marker-end="url(#dr2)"/>
+            <!-- right angle mark -->
+            <rect x="82" y="50" width="7" height="7" fill="none" stroke="#d97706" stroke-width="1.2" transform="rotate(10,85,53)"/>
+            <text x="60" y="42" font-size="9" fill="#d97706">d</text>
+            <text x="28" y="68" font-size="9" fill="#6b6860">B∈r</text>
+          </svg>
+        </div>
+        <p style="font-size:.82rem">Buscar el punto P de r más próximo a A (pie de la perpendicular):</p>
+        <ol style="font-size:.8rem; padding-left:16px; margin-top:4px; line-height:1.8">
+          <li>Escribir el punto genérico \(P(\lambda)\in r\)</li>
+          <li>Imponer \(\overrightarrow{AP}\cdot\vec{u} = 0\) → hallar λ</li>
+          <li>Sustituir λ → obtener P (pie de la perpendicular)</li>
+          <li>\(d(A,r) = |\overrightarrow{AP}|\)</li>
+        </ol>
+      </div>
+      <div class="card" style="margin-top:8px; border-left:3px solid var(--v1)">
+        <div class="card-title">Método 2 — Fórmula vectorial</div>
+        <div class="formula-box">
+          \(d(A,r) = \dfrac{|\overrightarrow{AB}\times\vec{u}|}{|\vec{u}|}\)
+        </div>
+        <p style="font-size:.78rem; margin-top:6px; color:var(--muted)">B es cualquier punto de r, \(\vec{u}\) su vector director</p>
+      </div>
+    </div>
+
+    <!-- Punto-Plano -->
+    <div>
+      <div class="subsec">Punto P — Plano π</div>
+      <div class="card" style="border-left:3px solid #7c3aed">
+        <div class="card-title">Método 1 — Procedimiento (pie perpendicular)</div>
+        <!-- SVG punto-plano -->
+        <div style="display:flex;justify-content:center;margin:4px 0 8px">
+          <svg width="170" height="95" viewBox="0 0 170 95">
+            <defs>
+              <marker id="dp1" markerWidth="5" markerHeight="5" refX="4" refY="2.5" orient="auto"><path d="M0,0 L5,2.5 L0,5 Z" fill="#059669"/></marker>
+              <marker id="dp2" markerWidth="5" markerHeight="5" refX="4" refY="2.5" orient="auto"><path d="M0,0 L5,2.5 L0,5 Z" fill="#d97706"/></marker>
+              <marker id="dp3" markerWidth="5" markerHeight="5" refX="4" refY="2.5" orient="auto"><path d="M0,0 L5,2.5 L0,5 Z" fill="#7c3aed"/></marker>
+            </defs>
+            <!-- plane -->
+            <polygon points="10,80 160,80 145,50 10,50" fill="#d1fae5" stroke="#059669" stroke-width="1.5" opacity=".7"/>
+            <text x="148" y="50" font-size="10" fill="#059669">π</text>
+            <!-- normal vector -->
+            <line x1="80" y1="65" x2="80" y2="28" stroke="#7c3aed" stroke-width="2" stroke-dasharray="3,2" marker-end="url(#dp3)"/>
+            <g><line x1="83" y1="17" x2="91" y2="17" stroke="#7c3aed" stroke-width="1.2"/><path d="M89,14 L93,17 L89,20 Z" fill="#7c3aed"/><text x="83" y="27" font-size="10" fill="#7c3aed" font-style="italic" font-family="sans-serif">n</text></g>
+            <!-- P point -->
+            <circle cx="80" cy="18" r="3.5" fill="#dc2626"/>
+            <text x="85" y="18" font-size="10" fill="#dc2626">P</text>
+            <!-- foot Q -->
+            <circle cx="80" cy="65" r="3.5" fill="#059669"/>
+            <text x="84" y="79" font-size="9" fill="#059669">Q</text>
+            <!-- distance -->
+            <line x1="80" y1="18" x2="80" y2="62" stroke="#d97706" stroke-width="2" stroke-dasharray="4,2"/>
+            <text x="85" y="42" font-size="9" fill="#d97706">d</text>
+            <!-- right angle -->
+            <rect x="74" y="59" width="6" height="6" fill="none" stroke="#d97706" stroke-width="1.2"/>
+          </svg>
+        </div>
+        <ol style="font-size:.8rem; padding-left:16px; margin-top:4px; line-height:1.8">
+          <li>Trazar la recta \(r\perp\pi\) por P con \(\vec{u}=\vec{n}=(A,B,C)\)</li>
+          <li>Calcular la intersección de r con π → obtener Q (pie de la perpendicular)</li>
+          <li>\(d(P,\pi) = |\overrightarrow{QP}|\)</li>
+        </ol>
+      </div>
+      <div class="card" style="margin-top:8px; border-left:3px solid var(--v4)">
+        <div class="card-title">Método 2 — Fórmula razonada</div>
+        <p style="font-size:.82rem">Sea Q un punto cualquiera del plano. La distancia es la proyección de \(\overrightarrow{QP}\) sobre la dirección normal \(\vec{n}\):</p>
+        <div class="formula-box" style="margin-top:6px">
+          \(d(P,\pi) = \dfrac{|\overrightarrow{QP}\cdot\vec{n}|}{|\vec{n}|}\)
+        </div>
+      </div>
+      <div class="card" style="margin-top:8px; border-left:3px solid var(--v3)">
+        <div class="card-title">Método 3 — Fórmula directa ⭐</div>
+        <div class="formula-box" style="background:var(--v3l); border-color:#6ee7b7">
+          \(d(P,\pi) = \dfrac{|Ax_0 + By_0 + Cz_0 + D|}{\sqrt{A^2+B^2+C^2}}\)
+        </div>
+        <p style="font-size:.78rem; margin-top:6px; color:var(--muted)">Siendo \(\pi: Ax+By+Cz+D=0\) y \(P=(x_0,y_0,z_0)\)</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Videos distancias -->
+  <div class="videos-section" style="margin-top:20px">
+    <div class="video-sec-title">📹 Vídeos — Distancias punto–recta y punto–plano</div>
+    <div class="video-grid">
+      <div class="video-item">
+        <div class="video-qr" id="qr-prec1"></div>
+        <div class="video-label">Punto–Recta teoría (2 métodos)</div>
+        <a class="video-url" href="https://youtu.be/Cp5KSaRXDlw" target="_blank">youtu.be/Cp5KSaRXDlw</a>
+      </div>
+      <div class="video-item">
+        <div class="video-qr" id="qr-prec2"></div>
+        <div class="video-label">Punto–Recta ejercicio fórmula</div>
+        <a class="video-url" href="https://youtu.be/o158Z1aiJ-U" target="_blank">youtu.be/o158Z1aiJ-U</a>
+      </div>
+      <div class="video-item">
+        <div class="video-qr" id="qr-prec3"></div>
+        <div class="video-label">Punto–Recta ejercicio procedimiento</div>
+        <a class="video-url" href="https://youtu.be/LqlFElqiENE" target="_blank">youtu.be/LqlFElqiENE</a>
+      </div>
+      <div class="video-item">
+        <div class="video-qr" id="qr-pplano1"></div>
+        <div class="video-label">Punto–Plano teoría</div>
+        <a class="video-url" href="https://youtu.be/_0xmei_7TUY" target="_blank">youtu.be/_0xmei_7TUY</a>
+      </div>
+      <div class="video-item">
+        <div class="video-qr" id="qr-pplano2"></div>
+        <div class="video-label">Punto–Plano fórmula razonada</div>
+        <a class="video-url" href="https://youtu.be/VyM7HVGSzt0" target="_blank">youtu.be/VyM7HVGSzt0</a>
+      </div>
+      <div class="video-item">
+        <div class="video-qr" id="qr-pplano3"></div>
+        <div class="video-label">Punto–Plano pie perpendicular</div>
+        <a class="video-url" href="https://youtu.be/rG44f52hQSg" target="_blank">youtu.be/rG44f52hQSg</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Distancia entre paralelos -->
+  <div style="margin-top:18px">
+    <div class="subsec">Distancia entre elementos geométricos paralelos</div>
+    <div class="highlight-box" style="font-size:.84rem; margin:8px 0 10px">
+      💡 <b>Principio de reducción:</b> la distancia entre dos elementos geométricos paralelos se reduce siempre a la distancia de un punto del primero al segundo.
+    </div>
+    <div class="grid-3" style="font-size:.82rem; margin-bottom:10px">
+      <div class="card" style="border-left:3px solid var(--v5)">
+        <div class="card-title">r ∥ s</div>
+        <p>Tomar A∈r → calcular d(A, s)</p>
+      </div>
+      <div class="card" style="border-left:3px solid var(--v4)">
+        <div class="card-title">r ∥ π</div>
+        <p>Tomar A∈r → calcular d(A, π)</p>
+      </div>
+      <div class="card" style="border-left:3px solid var(--v3)">
+        <div class="card-title">π₁ ∥ π₂</div>
+        <p>Tomar A∈π₁ → calcular d(A, π₂)</p>
+      </div>
+    </div>
+    <div style="margin-top:8px; display:flex; gap:10px; align-items:stretch">
+      <!-- vídeo -->
+      <div style="background:var(--white); border:1px solid var(--border); border-radius:var(--r); padding:10px; display:flex; gap:12px; align-items:center; flex:1">
+        <div class="video-qr" id="qr-par1" style="flex-shrink:0"></div>
+        <div>
+          <div style="font-size:.78rem; font-weight:600; color:var(--ink); margin-bottom:2px">📹 Vídeo — Elementos geométricos paralelos</div>
+          <div style="font-size:.76rem; color:var(--muted)">Reducción a distancia punto–elemento</div>
+          <a class="video-url" href="https://youtu.be/Cp5KSaRXDlw" target="_blank" style="font-size:.72rem">youtu.be/Cp5KSaRXDlw</a>
+        </div>
+      </div>
+      <!-- app -->
+      <a href="https://m4r14bravo.github.io/distancia_elementosgeometricos_paralelos/?authuser=0" target="_blank" style="text-decoration:none; flex:1">
+        <div style="background:var(--white); border:1px solid var(--border); border-left:3px solid var(--v4); border-radius:var(--r); padding:10px; display:flex; gap:12px; align-items:center; height:100%; cursor:pointer">
+          <div class="video-qr" id="qr-app-par" style="flex-shrink:0"></div>
+          <div>
+            <div style="font-size:.78rem; font-weight:600; color:var(--v4); margin-bottom:2px">🤖 Practica con IA</div>
+            <div style="font-size:.76rem; color:var(--ink)">Distancia entre elementos geométricos paralelos</div>
+            <div style="font-size:.72rem; color:var(--muted); margin-top:2px">Ejercicios interactivos con corrección por IA</div>
+          </div>
+        </div>
+      </a>
+    </div>
+  </div>
+
+  <!-- App links -->
+  <div class="videos-section" style="margin-top:16px">
+    <div class="video-sec-title">🤖 Practica con IA — Distancias punto–elemento</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+      <a href="https://m4r14bravo.github.io/distancia_punto_recta/?authuser=0" target="_blank" style="text-decoration:none">
+        <div class="card" style="border-left:3px solid var(--v2); cursor:pointer">
+          <div class="card-title" style="color:var(--v2)">🤖 Distancia punto–recta</div>
+          <p style="font-size:.78rem; color:var(--muted)">Ejercicios interactivos con IA</p>
+          <div class="video-qr" id="qr-app-pr" style="margin-top:6px"></div>
+        </div>
+      </a>
+      <a href="https://m4r14bravo.github.io/distancia_punto_plano/?authuser=0" target="_blank" style="text-decoration:none">
+        <div class="card" style="border-left:3px solid var(--v3); cursor:pointer">
+          <div class="card-title" style="color:var(--v3)">🤖 Distancia punto–plano</div>
+          <p style="font-size:.78rem; color:var(--muted)">Ejercicios interactivos con IA</p>
+          <div class="video-qr" id="qr-app-pp" style="margin-top:6px"></div>
+        </div>
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════ 5. RECTAS QUE SE CRUZAN -->
+<div class="page">
+  <div class="sec-header" style="color:var(--v5)">
+    <div class="sec-num" style="background:var(--v5)">⑤</div>
+    <div class="sec-title">Distancia entre Rectas que se Cruzan</div>
+  </div>
+
+  <div class="highlight-box" style="margin-bottom:14px; font-size:.83rem">
+    ⚠️ <b>Paso previo obligatorio:</b> Verificar que las rectas <em>se cruzan</em> (no son paralelas ni secantes).<br>
+    <ol style="margin-top:6px; padding-left:18px; line-height:1.9">
+      <li>Comprobar que los <b>vectores directores no son proporcionales</b> (descartan paralelas y coincidentes).</li>
+      <li>Comprobar que \([\vec{u}_r,\,\vec{u}_s,\,\overrightarrow{AB}]\neq 0\) (producto mixto ≠ 0), para descartar que sean secantes.</li>
+    </ol>
+  </div>
+
+  <div class="method-grid">
+    <!-- Método 1 -->
+    <div class="method-card" style="border-top:3px solid var(--v5); background:var(--v5l)">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+        <div class="method-num" style="background:var(--v5)">1</div>
+        <div class="method-name">Perpendicular común</div>
+      </div>
+      <ul class="method-steps">
+        <li>Escribir \(P(\lambda) \in r\) y \(Q(\mu) \in s\) genéricos</li>
+        <li>Imponer \(\overrightarrow{PQ}\cdot\vec{u}_r = 0\)</li>
+        <li>Imponer \(\overrightarrow{PQ}\cdot\vec{u}_s = 0\)</li>
+        <li>Resolver sistema 2×2 en λ y μ</li>
+        <li>Sustituir → obtener P y Q concretos</li>
+        <li>\(d = |\overrightarrow{PQ}|\)</li>
+      </ul>
+      <div class="formula-box" style="margin-top:8px; font-size:.8rem">
+        \(\overrightarrow{PQ}\perp\vec{u}_r \text{ y } \overrightarrow{PQ}\perp\vec{u}_s\)
+      </div>
+      <div class="highlight-box" style="margin-top:6px; font-size:.76rem">
+        🔶 Único método cuando el enunciado pide los puntos P y Q
+      </div>
+    </div>
+
+    <!-- Método 2 -->
+    <div class="method-card" style="border-top:3px solid var(--v4); background:var(--v4l)">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+        <div class="method-num" style="background:var(--v4)">2</div>
+        <div class="method-name">Plano paralelo</div>
+      </div>
+      <ul class="method-steps">
+        <li>Construir plano π que contiene a <em>r</em> y es paralelo a <em>s</em></li>
+        <li>Normal del plano: \(\vec{n} = \vec{u}_r \times \vec{u}_s\)</li>
+        <li>Punto del plano: cualquier \(A \in r\)</li>
+        <li>Tomar un punto \(B \in s\)</li>
+        <li>Calcular \(d(B,\pi)\) por cualquiera de los métodos vistos (fórmula directa o pie de la perpendicular)</li>
+      </ul>
+      <div class="formula-box" style="margin-top:8px; font-size:.8rem">
+        \(d(r,s) = d(B,\pi)\)
+      </div>
+    </div>
+
+    <!-- Método 3 -->
+    <div class="method-card" style="border-top:3px solid var(--v3); background:var(--v3l)">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+        <div class="method-num" style="background:var(--v3)">3</div>
+        <div class="method-name">Paralelepípedo</div>
+      </div>
+      <ul class="method-steps">
+        <li>Tomar \(A \in r\) y \(B \in s\) cualesquiera; calcular \(\overrightarrow{AB}\)</li>
+        <li>Calcular el <b>volumen</b> del paralelepípedo: \(V = \left|[\vec{u}_r,\vec{u}_s,\overrightarrow{AB}]\right|\)</li>
+        <li>Calcular el <b>área de la base</b>: \(A_{\text{base}} = |\vec{u}_r\times\vec{u}_s|\)</li>
+        <li>La distancia es la <b>altura</b> del paralelepípedo:</li>
+      </ul>
+      <div class="formula-box" style="margin-top:4px; background:var(--v3l); border-color:#6ee7b7; font-size:.9rem">
+        \(d = h = \dfrac{V}{A_{\text{base}}} = \dfrac{\left|[\vec{u}_r,\vec{u}_s,\overrightarrow{AB}]\right|}{|\vec{u}_r\times\vec{u}_s|}\)
+      </div>
+      <ul class="method-steps" style="margin-top:0">
+      </ul>
+      <p style="font-size:.76rem; color:var(--muted); margin-top:6px">El producto mixto es el determinante 3×3 formado por las filas \(\vec{u}_r\), \(\vec{u}_s\) y \(\overrightarrow{AB}\).</p>
+    </div>
+  </div>
+
+  <!-- SVG rectas cruzadas -->
+  <div style="display:flex;justify-content:center;margin:12px 0">
+    <div class="svg-item">
+      <svg width="200" height="130" viewBox="0 0 200 130">
+        <defs>
+          <marker id="rc1" markerWidth="5" markerHeight="5" refX="4" refY="2.5" orient="auto"><path d="M0,0 L5,2.5 L0,5 Z" fill="#dc2626"/></marker>
+          <marker id="rc2" markerWidth="5" markerHeight="5" refX="4" refY="2.5" orient="auto"><path d="M0,0 L5,2.5 L0,5 Z" fill="#0284c7"/></marker>
+          <marker id="rch" markerWidth="5" markerHeight="5" refX="4" refY="2.5" orient="auto"><path d="M0,0 L5,2.5 L0,5 Z" fill="#d97706"/></marker>
+        </defs>
+        <!-- plane shading -->
+        <polygon points="30,110 170,110 170,55 30,55" fill="#fee2e2" opacity=".4"/>
+        <!-- r -->
+        <line x1="15" y1="100" x2="170" y2="70" stroke="#dc2626" stroke-width="2.5" marker-end="url(#rc1)"/>
+        <text x="173" y="72" font-size="11" fill="#dc2626" font-weight="bold">r</text>
+        <!-- s -->
+        <line x1="60" y1="20" x2="130" y2="50" stroke="#0284c7" stroke-width="2.5" marker-end="url(#rc2)"/>
+        <text x="133" y="52" font-size="11" fill="#0284c7" font-weight="bold">s</text>
+        <!-- P on r -->
+        <circle cx="80" cy="90" r="3.5" fill="#dc2626"/>
+        <text x="72" y="105" font-size="9" fill="#dc2626">P</text>
+        <!-- Q on s -->
+        <circle cx="95" cy="35" r="3.5" fill="#0284c7"/>
+        <text x="99" y="34" font-size="9" fill="#0284c7">Q</text>
+        <!-- perpendicular PQ -->
+        <line x1="80" y1="90" x2="95" y2="35" stroke="#d97706" stroke-width="1.8" stroke-dasharray="5,2" marker-end="url(#rch)"/>
+        <text x="97" y="65" font-size="9" fill="#d97706">d</text>
+        <!-- right angle mark -->
+        <rect x="83" y="60" width="6" height="6" fill="none" stroke="#d97706" stroke-width="1" transform="rotate(-15,86,63)"/>
+      </svg>
+      <div class="svg-caption">PQ = perpendicular común mínima entre r y s</div>
+    </div>
+  </div>
+
+  <!-- Videos rectas que se cruzan -->
+  <div class="videos-section" style="margin-top:16px">
+    <div class="video-sec-title">📹 Vídeos — Rectas que se cruzan</div>
+    <div class="video-grid">
+      <div class="video-item">
+        <div class="video-qr" id="qr-rc1"></div>
+        <div class="video-label">Teoría — perpendicular común</div>
+        <a class="video-url" href="https://youtu.be/EQVSpV48-N4" target="_blank">youtu.be/EQVSpV48-N4</a>
+      </div>
+      <div class="video-item">
+        <div class="video-qr" id="qr-rc2"></div>
+        <div class="video-label">Teoría — plano paralelo y paralelepípedo</div>
+        <a class="video-url" href="https://youtu.be/EYrWTVuGmuM" target="_blank">youtu.be/EYrWTVuGmuM</a>
+      </div>
+      <div class="video-item">
+        <div class="video-qr" id="qr-rc3"></div>
+        <div class="video-label">Ejercicio — posición relativa</div>
+        <a class="video-url" href="https://youtu.be/VF-yYAzUoqU" target="_blank">youtu.be/VF-yYAzUoqU</a>
+      </div>
+      <div class="video-item">
+        <div class="video-qr" id="qr-rc4"></div>
+        <div class="video-label">Ejercicio — perpendicular común</div>
+        <a class="video-url" href="https://youtu.be/kD1I9kkvp8I" target="_blank">youtu.be/kD1I9kkvp8I</a>
+      </div>
+      <div class="video-item">
+        <div class="video-qr" id="qr-rc5"></div>
+        <div class="video-label">Ejercicio — plano paralelo</div>
+        <a class="video-url" href="https://youtu.be/7V0_R4aiH74" target="_blank">youtu.be/7V0_R4aiH74</a>
+      </div>
+      <div class="video-item">
+        <div class="video-qr" id="qr-rc6"></div>
+        <div class="video-label">Ejercicio — paralelepípedo</div>
+        <a class="video-url" href="https://youtu.be/ycS4GoBXBL0" target="_blank">youtu.be/ycS4GoBXBL0</a>
+      </div>
+      <div class="video-item">
+        <div class="video-qr" id="qr-rc7"></div>
+        <div class="video-label">Ejercicio 2 — perpendicular común</div>
+        <a class="video-url" href="https://youtu.be/fcCbEMq-FuY" target="_blank">youtu.be/fcCbEMq-FuY</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- App link rectas cruzadas -->
+  <div class="videos-section" style="margin-top:14px">
+    <div class="video-sec-title">🤖 Practica con IA</div>
+    <a href="https://m4r14bravo.github.io/distancia_rectas_cruzan/?authuser=0" target="_blank" style="text-decoration:none">
+      <div class="card" style="border-left:3px solid var(--v5); cursor:pointer; max-width:340px">
+        <div class="card-title" style="color:var(--v5)">🤖 Distancia entre rectas que se cruzan</div>
+        <p style="font-size:.78rem; color:var(--muted)">Ejercicios interactivos con IA</p>
+        <div class="video-qr" id="qr-app-rc" style="margin-top:6px"></div>
+      </div>
+    </a>
+  </div>
+</div>
+
+<div style="max-width:900px; margin: 0 auto 40px; text-align:center; font-size:.72rem; color:#9ca3af; padding:12px">
+  Geometría en el Espacio · 2º Bachillerato PAU · Apuntes basados en los cuadernos de clase
+</div>
+
+<script>
+// Generate all QR codes after DOM load
+document.addEventListener('DOMContentLoaded', function() {
+  const videos = [
+    { id: 'qr-prec1',   url: 'https://youtu.be/Cp5KSaRXDlw' },
+    { id: 'qr-prec2',   url: 'https://youtu.be/o158Z1aiJ-U' },
+    { id: 'qr-prec3',   url: 'https://youtu.be/LqlFElqiENE' },
+    { id: 'qr-pplano1', url: 'https://youtu.be/_0xmei_7TUY' },
+    { id: 'qr-pplano2', url: 'https://youtu.be/VyM7HVGSzt0' },
+    { id: 'qr-pplano3', url: 'https://youtu.be/rG44f52hQSg' },
+    { id: 'qr-par1',    url: 'https://youtu.be/Cp5KSaRXDlw' },
+    { id: 'qr-rc1',     url: 'https://youtu.be/EQVSpV48-N4' },
+    { id: 'qr-rc2',     url: 'https://youtu.be/EYrWTVuGmuM' },
+    { id: 'qr-rc3',     url: 'https://youtu.be/VF-yYAzUoqU' },
+    { id: 'qr-rc4',     url: 'https://youtu.be/kD1I9kkvp8I' },
+    { id: 'qr-rc5',     url: 'https://youtu.be/7V0_R4aiH74' },
+    { id: 'qr-rc6',     url: 'https://youtu.be/ycS4GoBXBL0' },
+    { id: 'qr-rc7',     url: 'https://youtu.be/fcCbEMq-FuY' },
+    { id: 'qr-app-general', url: 'https://m4r14bravo.github.io/2bachillerato_geometria/', size: 60 },
+    { id: 'qr-app-pr',  url: 'https://m4r14bravo.github.io/distancia_punto_recta/?authuser=0', size: 60 },
+    { id: 'qr-app-pp',  url: 'https://m4r14bravo.github.io/distancia_punto_plano/?authuser=0', size: 60 },
+    { id: 'qr-app-par', url: 'https://m4r14bravo.github.io/distancia_elementosgeometricos_paralelos/?authuser=0', size: 60 },
+    { id: 'qr-app-rc',  url: 'https://m4r14bravo.github.io/distancia_rectas_cruzan/?authuser=0', size: 60 },
+  ];
+
+  videos.forEach(function(v) {
+    var el = document.getElementById(v.id);
+    if (el && typeof QRCode !== 'undefined') {
+      var sz = v.size || 70;
+      new QRCode(el, {
+        text: v.url,
+        width: sz,
+        height: sz,
+        colorDark: '#1a1917',
+        colorLight: '#ffffff',
+        correctLevel: QRCode.CorrectLevel.M
+      });
+    }
+  });
+});
+</script>
+</body>
+</html>
